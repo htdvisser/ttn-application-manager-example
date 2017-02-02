@@ -158,10 +158,14 @@ func (MType) EnumDescriptor() ([]byte, []int) { return fileDescriptorLorawan, []
 
 type Metadata struct {
 	Modulation Modulation `protobuf:"varint,11,opt,name=modulation,proto3,enum=lorawan.Modulation" json:"modulation,omitempty"`
-	DataRate   string     `protobuf:"bytes,12,opt,name=data_rate,json=dataRate,proto3" json:"data_rate,omitempty"`
-	BitRate    uint32     `protobuf:"varint,13,opt,name=bit_rate,json=bitRate,proto3" json:"bit_rate,omitempty"`
-	CodingRate string     `protobuf:"bytes,14,opt,name=coding_rate,json=codingRate,proto3" json:"coding_rate,omitempty"`
-	FCnt       uint32     `protobuf:"varint,15,opt,name=f_cnt,json=fCnt,proto3" json:"f_cnt,omitempty"`
+	// LoRa data rate - SF{spreadingfactor}BW{bandwidth}
+	DataRate string `protobuf:"bytes,12,opt,name=data_rate,json=dataRate,proto3" json:"data_rate,omitempty"`
+	// FSK bit rate in bit/s
+	BitRate uint32 `protobuf:"varint,13,opt,name=bit_rate,json=bitRate,proto3" json:"bit_rate,omitempty"`
+	// LoRa coding rate
+	CodingRate string `protobuf:"bytes,14,opt,name=coding_rate,json=codingRate,proto3" json:"coding_rate,omitempty"`
+	// Store the full 32 bit FCnt (deprecated; do not use)
+	FCnt uint32 `protobuf:"varint,15,opt,name=f_cnt,json=fCnt,proto3" json:"f_cnt,omitempty"`
 }
 
 func (m *Metadata) Reset()                    { *m = Metadata{} }
@@ -169,18 +173,92 @@ func (m *Metadata) String() string            { return proto.CompactTextString(m
 func (*Metadata) ProtoMessage()               {}
 func (*Metadata) Descriptor() ([]byte, []int) { return fileDescriptorLorawan, []int{0} }
 
+func (m *Metadata) GetModulation() Modulation {
+	if m != nil {
+		return m.Modulation
+	}
+	return Modulation_LORA
+}
+
+func (m *Metadata) GetDataRate() string {
+	if m != nil {
+		return m.DataRate
+	}
+	return ""
+}
+
+func (m *Metadata) GetBitRate() uint32 {
+	if m != nil {
+		return m.BitRate
+	}
+	return 0
+}
+
+func (m *Metadata) GetCodingRate() string {
+	if m != nil {
+		return m.CodingRate
+	}
+	return ""
+}
+
+func (m *Metadata) GetFCnt() uint32 {
+	if m != nil {
+		return m.FCnt
+	}
+	return 0
+}
+
 type TxConfiguration struct {
 	Modulation Modulation `protobuf:"varint,11,opt,name=modulation,proto3,enum=lorawan.Modulation" json:"modulation,omitempty"`
-	DataRate   string     `protobuf:"bytes,12,opt,name=data_rate,json=dataRate,proto3" json:"data_rate,omitempty"`
-	BitRate    uint32     `protobuf:"varint,13,opt,name=bit_rate,json=bitRate,proto3" json:"bit_rate,omitempty"`
-	CodingRate string     `protobuf:"bytes,14,opt,name=coding_rate,json=codingRate,proto3" json:"coding_rate,omitempty"`
-	FCnt       uint32     `protobuf:"varint,15,opt,name=f_cnt,json=fCnt,proto3" json:"f_cnt,omitempty"`
+	// LoRa data rate - SF{spreadingfactor}BW{bandwidth}
+	DataRate string `protobuf:"bytes,12,opt,name=data_rate,json=dataRate,proto3" json:"data_rate,omitempty"`
+	// FSK bit rate in bit/s
+	BitRate uint32 `protobuf:"varint,13,opt,name=bit_rate,json=bitRate,proto3" json:"bit_rate,omitempty"`
+	// LoRa coding rate
+	CodingRate string `protobuf:"bytes,14,opt,name=coding_rate,json=codingRate,proto3" json:"coding_rate,omitempty"`
+	// Store the full 32 bit FCnt (deprecated; do not use)
+	FCnt uint32 `protobuf:"varint,15,opt,name=f_cnt,json=fCnt,proto3" json:"f_cnt,omitempty"`
 }
 
 func (m *TxConfiguration) Reset()                    { *m = TxConfiguration{} }
 func (m *TxConfiguration) String() string            { return proto.CompactTextString(m) }
 func (*TxConfiguration) ProtoMessage()               {}
 func (*TxConfiguration) Descriptor() ([]byte, []int) { return fileDescriptorLorawan, []int{1} }
+
+func (m *TxConfiguration) GetModulation() Modulation {
+	if m != nil {
+		return m.Modulation
+	}
+	return Modulation_LORA
+}
+
+func (m *TxConfiguration) GetDataRate() string {
+	if m != nil {
+		return m.DataRate
+	}
+	return ""
+}
+
+func (m *TxConfiguration) GetBitRate() uint32 {
+	if m != nil {
+		return m.BitRate
+	}
+	return 0
+}
+
+func (m *TxConfiguration) GetCodingRate() string {
+	if m != nil {
+		return m.CodingRate
+	}
+	return ""
+}
+
+func (m *TxConfiguration) GetFCnt() uint32 {
+	if m != nil {
+		return m.FCnt
+	}
+	return 0
+}
 
 type ActivationMetadata struct {
 	AppEui      *github_com_TheThingsNetwork_ttn_core_types.AppEUI  `protobuf:"bytes,1,opt,name=app_eui,json=appEui,proto3,customtype=github.com/TheThingsNetwork/ttn/core/types.AppEUI" json:"app_eui,omitempty"`
@@ -197,6 +275,27 @@ func (m *ActivationMetadata) Reset()                    { *m = ActivationMetadat
 func (m *ActivationMetadata) String() string            { return proto.CompactTextString(m) }
 func (*ActivationMetadata) ProtoMessage()               {}
 func (*ActivationMetadata) Descriptor() ([]byte, []int) { return fileDescriptorLorawan, []int{2} }
+
+func (m *ActivationMetadata) GetRx1DrOffset() uint32 {
+	if m != nil {
+		return m.Rx1DrOffset
+	}
+	return 0
+}
+
+func (m *ActivationMetadata) GetRx2Dr() uint32 {
+	if m != nil {
+		return m.Rx2Dr
+	}
+	return 0
+}
+
+func (m *ActivationMetadata) GetRxDelay() uint32 {
+	if m != nil {
+		return m.RxDelay
+	}
+	return 0
+}
 
 func (m *ActivationMetadata) GetCfList() *CFList {
 	if m != nil {
@@ -243,6 +342,13 @@ func (*Message_JoinAcceptPayload) isMessage_Payload()  {}
 func (m *Message) GetPayload() isMessage_Payload {
 	if m != nil {
 		return m.Payload
+	}
+	return nil
+}
+
+func (m *Message) GetMic() []byte {
+	if m != nil {
+		return m.Mic
 	}
 	return nil
 }
@@ -371,6 +477,20 @@ func (m *MHDR) String() string            { return proto.CompactTextString(m) }
 func (*MHDR) ProtoMessage()               {}
 func (*MHDR) Descriptor() ([]byte, []int) { return fileDescriptorLorawan, []int{4} }
 
+func (m *MHDR) GetMType() MType {
+	if m != nil {
+		return m.MType
+	}
+	return MType_JOIN_REQUEST
+}
+
+func (m *MHDR) GetMajor() Major {
+	if m != nil {
+		return m.Major
+	}
+	return Major_LORAWAN_R1
+}
+
 type MACPayload struct {
 	FHDR       `protobuf:"bytes,1,opt,name=f_hdr,json=fHdr,embedded=f_hdr" json:"f_hdr"`
 	FPort      int32  `protobuf:"varint,2,opt,name=f_port,json=fPort,proto3" json:"f_port,omitempty"`
@@ -381,6 +501,20 @@ func (m *MACPayload) Reset()                    { *m = MACPayload{} }
 func (m *MACPayload) String() string            { return proto.CompactTextString(m) }
 func (*MACPayload) ProtoMessage()               {}
 func (*MACPayload) Descriptor() ([]byte, []int) { return fileDescriptorLorawan, []int{5} }
+
+func (m *MACPayload) GetFPort() int32 {
+	if m != nil {
+		return m.FPort
+	}
+	return 0
+}
+
+func (m *MACPayload) GetFrmPayload() []byte {
+	if m != nil {
+		return m.FrmPayload
+	}
+	return nil
+}
 
 type FHDR struct {
 	DevAddr github_com_TheThingsNetwork_ttn_core_types.DevAddr `protobuf:"bytes,1,opt,name=dev_addr,json=devAddr,proto3,customtype=github.com/TheThingsNetwork/ttn/core/types.DevAddr" json:"dev_addr"`
@@ -393,6 +527,13 @@ func (m *FHDR) Reset()                    { *m = FHDR{} }
 func (m *FHDR) String() string            { return proto.CompactTextString(m) }
 func (*FHDR) ProtoMessage()               {}
 func (*FHDR) Descriptor() ([]byte, []int) { return fileDescriptorLorawan, []int{6} }
+
+func (m *FHDR) GetFCnt() uint32 {
+	if m != nil {
+		return m.FCnt
+	}
+	return 0
+}
 
 func (m *FHDR) GetFOpts() []MACCommand {
 	if m != nil {
@@ -413,6 +554,34 @@ func (m *FCtrl) String() string            { return proto.CompactTextString(m) }
 func (*FCtrl) ProtoMessage()               {}
 func (*FCtrl) Descriptor() ([]byte, []int) { return fileDescriptorLorawan, []int{7} }
 
+func (m *FCtrl) GetAdr() bool {
+	if m != nil {
+		return m.Adr
+	}
+	return false
+}
+
+func (m *FCtrl) GetAdrAckReq() bool {
+	if m != nil {
+		return m.AdrAckReq
+	}
+	return false
+}
+
+func (m *FCtrl) GetAck() bool {
+	if m != nil {
+		return m.Ack
+	}
+	return false
+}
+
+func (m *FCtrl) GetFPending() bool {
+	if m != nil {
+		return m.FPending
+	}
+	return false
+}
+
 type MACCommand struct {
 	Cid     uint32 `protobuf:"varint,1,opt,name=cid,proto3" json:"cid,omitempty"`
 	Payload []byte `protobuf:"bytes,2,opt,name=payload,proto3" json:"payload,omitempty"`
@@ -422,6 +591,20 @@ func (m *MACCommand) Reset()                    { *m = MACCommand{} }
 func (m *MACCommand) String() string            { return proto.CompactTextString(m) }
 func (*MACCommand) ProtoMessage()               {}
 func (*MACCommand) Descriptor() ([]byte, []int) { return fileDescriptorLorawan, []int{8} }
+
+func (m *MACCommand) GetCid() uint32 {
+	if m != nil {
+		return m.Cid
+	}
+	return 0
+}
+
+func (m *MACCommand) GetPayload() []byte {
+	if m != nil {
+		return m.Payload
+	}
+	return nil
+}
 
 type JoinRequestPayload struct {
 	AppEui   github_com_TheThingsNetwork_ttn_core_types.AppEUI   `protobuf:"bytes,1,opt,name=app_eui,json=appEui,proto3,customtype=github.com/TheThingsNetwork/ttn/core/types.AppEUI" json:"app_eui"`
@@ -449,6 +632,20 @@ func (m *JoinAcceptPayload) String() string            { return proto.CompactTex
 func (*JoinAcceptPayload) ProtoMessage()               {}
 func (*JoinAcceptPayload) Descriptor() ([]byte, []int) { return fileDescriptorLorawan, []int{10} }
 
+func (m *JoinAcceptPayload) GetEncrypted() []byte {
+	if m != nil {
+		return m.Encrypted
+	}
+	return nil
+}
+
+func (m *JoinAcceptPayload) GetRxDelay() uint32 {
+	if m != nil {
+		return m.RxDelay
+	}
+	return 0
+}
+
 func (m *JoinAcceptPayload) GetCfList() *CFList {
 	if m != nil {
 		return m.CfList
@@ -466,6 +663,20 @@ func (m *DLSettings) String() string            { return proto.CompactTextString
 func (*DLSettings) ProtoMessage()               {}
 func (*DLSettings) Descriptor() ([]byte, []int) { return fileDescriptorLorawan, []int{11} }
 
+func (m *DLSettings) GetRx1DrOffset() uint32 {
+	if m != nil {
+		return m.Rx1DrOffset
+	}
+	return 0
+}
+
+func (m *DLSettings) GetRx2Dr() uint32 {
+	if m != nil {
+		return m.Rx2Dr
+	}
+	return 0
+}
+
 type CFList struct {
 	Freq []uint32 `protobuf:"varint,1,rep,packed,name=freq" json:"freq,omitempty"`
 }
@@ -474,6 +685,13 @@ func (m *CFList) Reset()                    { *m = CFList{} }
 func (m *CFList) String() string            { return proto.CompactTextString(m) }
 func (*CFList) ProtoMessage()               {}
 func (*CFList) Descriptor() ([]byte, []int) { return fileDescriptorLorawan, []int{12} }
+
+func (m *CFList) GetFreq() []uint32 {
+	if m != nil {
+		return m.Freq
+	}
+	return nil
+}
 
 func init() {
 	proto.RegisterType((*Metadata)(nil), "lorawan.Metadata")
@@ -3353,7 +3571,24 @@ func (m *CFList) Unmarshal(dAtA []byte) error {
 		}
 		switch fieldNum {
 		case 1:
-			if wireType == 2 {
+			if wireType == 0 {
+				var v uint32
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowLorawan
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					v |= (uint32(b) & 0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				m.Freq = append(m.Freq, v)
+			} else if wireType == 2 {
 				var packedLen int
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
@@ -3394,23 +3629,6 @@ func (m *CFList) Unmarshal(dAtA []byte) error {
 					}
 					m.Freq = append(m.Freq, v)
 				}
-			} else if wireType == 0 {
-				var v uint32
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return ErrIntOverflowLorawan
-					}
-					if iNdEx >= l {
-						return io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					v |= (uint32(b) & 0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				m.Freq = append(m.Freq, v)
 			} else {
 				return fmt.Errorf("proto: wrong wireType = %d for field Freq", wireType)
 			}

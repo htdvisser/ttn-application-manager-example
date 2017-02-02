@@ -143,8 +143,11 @@ GetDevice returns the device with the given identifier (app_id and dev_id)
 
 ```json
 {
+  "altitude": 0,
   "app_id": "some-app-id",
   "dev_id": "some-dev-id",
+  "latitude": 0,
+  "longitude": 0,
   "lorawan_device": {
     "activation_constraints": "local",
     "app_eui": "0102030405060708",
@@ -182,8 +185,11 @@ SetDevice creates or updates a device. All fields must be supplied.
 
 ```json
 {
+  "altitude": 0,
   "app_id": "some-app-id",
   "dev_id": "some-dev-id",
+  "latitude": 0,
+  "longitude": 0,
   "lorawan_device": {
     "activation_constraints": "local",
     "app_eui": "0102030405060708",
@@ -260,8 +266,11 @@ GetDevicesForApplication returns all devices that belong to the application with
 {
   "devices": [
     {
+      "altitude": 0,
       "app_id": "some-app-id",
       "dev_id": "some-dev-id",
+      "latitude": 0,
+      "longitude": 0,
       "lorawan_device": {
         "activation_constraints": "local",
         "app_eui": "0102030405060708",
@@ -331,6 +340,9 @@ The Device settings
 | `app_id` | `string` |  |
 | `dev_id` | `string` |  |
 | `lorawan_device` | [`Device`](#lorawandevice) |  |
+| `latitude` | `float` |  |
+| `longitude` | `float` |  |
+| `altitude` | `int32` |  |
 
 ### `.handler.DeviceIdentifier`
 
@@ -409,6 +421,6 @@ DryUplinkResult is the result from an uplink simulation
 | `f_cnt_down` | `uint32` | FCntDown is the downlink frame counter for a device session. |
 | `disable_f_cnt_check` | `bool` | The DisableFCntCheck option disables the frame counter check. Disabling this makes the device vulnerable to replay attacks, but makes ABP slightly easier. |
 | `uses32_bit_f_cnt` | `bool` | The Uses32BitFCnt option indicates that the device keeps track of full 32 bit frame counters. As only the 16 lsb are actually transmitted, the 16 msb will have to be inferred. |
-| `activation_constraints` | `string` | The ActivationContstraints are used to allocate a device address for a device. There are different prefixes for `otaa`, `abp`, `world`, `local`, `private`, `testing`. |
+| `activation_constraints` | `string` | The ActivationContstraints are used to allocate a device address for a device (comma-separated). There are different prefixes for `otaa`, `abp`, `world`, `local`, `private`, `testing`. |
 | `last_seen` | `int64` | When the device was last seen (Unix nanoseconds) |
 

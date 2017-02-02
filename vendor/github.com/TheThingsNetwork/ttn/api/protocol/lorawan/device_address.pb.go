@@ -50,6 +50,7 @@ func (*PrefixesRequest) ProtoMessage()               {}
 func (*PrefixesRequest) Descriptor() ([]byte, []int) { return fileDescriptorDeviceAddress, []int{0} }
 
 type PrefixesResponse struct {
+	// The prefixes that are in use or available
 	Prefixes []*PrefixesResponse_PrefixMapping `protobuf:"bytes,1,rep,name=prefixes" json:"prefixes,omitempty"`
 }
 
@@ -66,8 +67,10 @@ func (m *PrefixesResponse) GetPrefixes() []*PrefixesResponse_PrefixMapping {
 }
 
 type PrefixesResponse_PrefixMapping struct {
-	Prefix string   `protobuf:"bytes,1,opt,name=prefix,proto3" json:"prefix,omitempty"`
-	Usage  []string `protobuf:"bytes,2,rep,name=usage" json:"usage,omitempty"`
+	// The prefix that can be used
+	Prefix string `protobuf:"bytes,1,opt,name=prefix,proto3" json:"prefix,omitempty"`
+	// Usage constraints of this prefix (see activation_constraints in device.proto)
+	Usage []string `protobuf:"bytes,2,rep,name=usage" json:"usage,omitempty"`
 }
 
 func (m *PrefixesResponse_PrefixMapping) Reset()         { *m = PrefixesResponse_PrefixMapping{} }
@@ -77,7 +80,22 @@ func (*PrefixesResponse_PrefixMapping) Descriptor() ([]byte, []int) {
 	return fileDescriptorDeviceAddress, []int{1, 0}
 }
 
+func (m *PrefixesResponse_PrefixMapping) GetPrefix() string {
+	if m != nil {
+		return m.Prefix
+	}
+	return ""
+}
+
+func (m *PrefixesResponse_PrefixMapping) GetUsage() []string {
+	if m != nil {
+		return m.Usage
+	}
+	return nil
+}
+
 type DevAddrRequest struct {
+	// The usage constraints (see activation_constraints in device.proto)
 	Usage []string `protobuf:"bytes,1,rep,name=usage" json:"usage,omitempty"`
 }
 
@@ -85,6 +103,13 @@ func (m *DevAddrRequest) Reset()                    { *m = DevAddrRequest{} }
 func (m *DevAddrRequest) String() string            { return proto.CompactTextString(m) }
 func (*DevAddrRequest) ProtoMessage()               {}
 func (*DevAddrRequest) Descriptor() ([]byte, []int) { return fileDescriptorDeviceAddress, []int{2} }
+
+func (m *DevAddrRequest) GetUsage() []string {
+	if m != nil {
+		return m.Usage
+	}
+	return nil
+}
 
 type DevAddrResponse struct {
 	DevAddr *github_com_TheThingsNetwork_ttn_core_types.DevAddr `protobuf:"bytes,1,opt,name=dev_addr,json=devAddr,proto3,customtype=github.com/TheThingsNetwork/ttn/core/types.DevAddr" json:"dev_addr,omitempty"`
@@ -114,7 +139,9 @@ const _ = grpc.SupportPackageIsVersion4
 // Client API for DevAddrManager service
 
 type DevAddrManagerClient interface {
+	// Get all prefixes that are in use or available
 	GetPrefixes(ctx context.Context, in *PrefixesRequest, opts ...grpc.CallOption) (*PrefixesResponse, error)
+	// Request a device address
 	GetDevAddr(ctx context.Context, in *DevAddrRequest, opts ...grpc.CallOption) (*DevAddrResponse, error)
 }
 
@@ -147,7 +174,9 @@ func (c *devAddrManagerClient) GetDevAddr(ctx context.Context, in *DevAddrReques
 // Server API for DevAddrManager service
 
 type DevAddrManagerServer interface {
+	// Get all prefixes that are in use or available
 	GetPrefixes(context.Context, *PrefixesRequest) (*PrefixesResponse, error)
+	// Request a device address
 	GetDevAddr(context.Context, *DevAddrRequest) (*DevAddrResponse, error)
 }
 

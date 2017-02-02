@@ -1,4 +1,4 @@
-// Copyright © 2016 The Things Network
+// Copyright © 2017 The Things Network
 // Use of this source code is governed by the MIT license that can be found in the LICENSE file.
 
 package lorawan
@@ -190,8 +190,8 @@ func MessageFromPHYPayload(phy lorawan.PHYPayload) Message {
 	return m
 }
 
-// GetDataRate returns the band.Datarate for the current Metadata
-func (m *Metadata) GetDataRate() (dataRate band.DataRate, err error) {
+// GetLoRaWANDataRate returns the band.Datarate for the current Metadata
+func (m *Metadata) GetLoRaWANDataRate() (dataRate band.DataRate, err error) {
 	switch m.Modulation {
 	case Modulation_LORA:
 		dataRate.Modulation = band.LoRaModulation

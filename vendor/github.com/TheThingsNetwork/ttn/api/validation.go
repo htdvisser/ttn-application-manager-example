@@ -1,3 +1,6 @@
+// Copyright © 2017 The Things Network
+// Use of this source code is governed by the MIT license that can be found in the LICENSE file.
+
 package api
 
 import (
@@ -35,7 +38,7 @@ func NotEmptyAndValidID(id string, argument string) error {
 		return errors.NewErrInvalidArgument(argument, "can not be empty")
 	}
 	if !ValidID(id) {
-		return errors.NewErrInvalidArgument(argument, "has wrong format "+id)
+		return errors.NewErrInvalidArgument(argument, "has wrong format. IDs can contain lowercase letters, numbers, dashes and underscores and should have a maximum length of 36")
 	}
 	return nil
 }
